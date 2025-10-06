@@ -1,0 +1,499 @@
+{
+  "name": "n8n_waha_pipa",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "webehook",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -416,
+        -16
+      ],
+      "id": "8b320f31-be8f-42f6-a759-78285bd3eb56",
+      "name": "Webhook",
+      "webhookId": "370e9024-6e99-4118-94da-617598aefa8f"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "602df23e-5046-4316-b8d2-55c17a097350",
+              "name": "session",
+              "value": "={{ $json.body.session }}",
+              "type": "string"
+            },
+            {
+              "id": "7f25022c-7db6-43b1-b185-f1767af9bc6f",
+              "name": "chatld",
+              "value": "={{ $json.body.payload.from }}",
+              "type": "string"
+            },
+            {
+              "id": "1c208436-3b7f-47fd-acf7-fac3d0a856ab",
+              "name": "pushName",
+              "value": "={{ $json.body.payload._data.Info.PushName }}",
+              "type": "string"
+            },
+            {
+              "id": "144a6ee5-e769-40cc-b5f7-70a274ccd28d",
+              "name": "payload_id",
+              "value": "={{ $json.body.payload.id }}",
+              "type": "string"
+            },
+            {
+              "id": "a4ec5831-aca3-48d9-9c75-115eba08c921",
+              "name": "event",
+              "value": "={{ $json.body.event }}",
+              "type": "string"
+            },
+            {
+              "id": "1100077c-325c-46c1-9227-78b14f036b4c",
+              "name": "message",
+              "value": "={{ $json.body.payload.body }}",
+              "type": "string"
+            },
+            {
+              "id": "2a12e90b-0408-4823-bffd-03312f622912",
+              "name": "body.payload.body",
+              "value": "={{ $json.body.payload.body }}",
+              "type": "string"
+            },
+            {
+              "id": "a67224a2-5a71-487b-bd1b-c86d59813311",
+              "name": "FromME",
+              "value": "={{ $json.body.payload.fromMe }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -208,
+        -16
+      ],
+      "id": "eae2c347-1a47-4950-af63-f5aa9114c257",
+      "name": "Dados"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.event }}",
+                    "rightValue": "=message",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "95327808-6252-43ab-b31a-ef1b8ac72cf0"
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        0,
+        -16
+      ],
+      "id": "ea7dfb27-af7b-4ce2-b773-8181a11e7cd7",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message }}",
+        "options": {
+          "systemMessage": "Você é um agente virtual do PipaAluguel. Sempre cumprimente o cliente de forma calorosa e amigável.\n\n1. Ao iniciar a conversa, dê as boas-vindas e diga:  \n   \"Bem-vindo(a) ao PipaAluguel 🌴✨! Será um prazer ajudar você com sua reserva.  \n   Qual a data de check-in e check-out que gostaria? Quantas pessoas irão realizar a reserva?  \n   Tem preferência na quantidade de quartos?\"\n\n2. Após o cliente responder, diga:  \n   \"Obrigada pelas informações fornecidas! Em breve um consultor humano irá te atender melhor.  \n   Enquanto aguarda, gostaria de ter mais informações sobre Pipa?\"\n\n3. Se o cliente responder **sim**, vire um guia turístico e traga dicas curtas e interessantes sobre:  \n   - A Praia da Pipa (RN)  \n   - Os pontos turísticos em Tibau do Sul  \n   - A cultura local e passeios (golfinhos, gastronomia, vida noturna, praias próximas etc.)  \n\n⚠️ Regras de estilo:  \n- Seja sempre amigável e acolhedor.  \n- Evite textos longos; entregue informações em partes, instigando o cliente a pedir mais.  \n- Sempre convide o cliente a continuar a conversa com perguntas do tipo:  \n  \"Quer que eu fale mais sobre [tema]?\"  \n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        -16
+      ],
+      "id": "899cb9eb-b157-49a1-8ea1-48b5653cf353",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        160,
+        128
+      ],
+      "id": "d2bfb0ba-9593-4bc7-b484-15855d91fc71",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "A7XXi6UKP8dM37So",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Send Seen",
+        "session": "={{ $('Dados').item.json.session }}",
+        "chatId": "={{ $('Dados').item.json.chatld }}",
+        "messageId": "={{ $('Dados').item.json.payload_id }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-waha.WAHA",
+      "typeVersion": 202411,
+      "position": [
+        528,
+        -16
+      ],
+      "id": "2c5ee536-39bf-44b0-83ce-7423e7f6111d",
+      "name": "Send Seen",
+      "credentials": {
+        "wahaApi": {
+          "id": "VJ8vo7sIuD9tkwIh",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Dados').item.json.chatld }}",
+        "sessionTTL": 3600,
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryRedisChat",
+      "typeVersion": 1.5,
+      "position": [
+        272,
+        240
+      ],
+      "id": "c8389c85-3004-47b8-8e04-7a09b0236aed",
+      "name": "Redis Chat Memory",
+      "credentials": {
+        "redis": {
+          "id": "bnYVKVzrk1GYWb3m",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "Chatting",
+        "operation": "Send Text",
+        "session": "={{ $('Dados').item.json.session }}",
+        "chatId": "={{ $('Dados').item.json.chatld }}",
+        "text": "={{ $('AI Agent').item.json.output }}",
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-waha.WAHA",
+      "typeVersion": 202411,
+      "position": [
+        736,
+        -16
+      ],
+      "id": "2d790cf8-02aa-4832-a5c9-8f89c94e6e96",
+      "name": "Send a text message",
+      "credentials": {
+        "wahaApi": {
+          "id": "VJ8vo7sIuD9tkwIh",
+          "name": "WAHA account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        480,
+        176
+      ],
+      "id": "2a284422-48b0-44b4-ae05-64d79ee0dc3c",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolWikipedia",
+      "typeVersion": 1,
+      "position": [
+        368,
+        192
+      ],
+      "id": "8b950c6e-0190-42ee-aea3-f4535c1aa04c",
+      "name": "Wikipedia"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "accept": "application/json, text/plain, */*",
+            "content-type": "application/json",
+            "user-agent": "WAHA/2025.9.4",
+            "x-webhook-request-id": "01K5SVKEY16AN2FSJKV858577J",
+            "x-webhook-timestamp": "1758583176117",
+            "content-length": "2138",
+            "accept-encoding": "gzip, compress, deflate, br",
+            "host": "host.docker.internal:5678",
+            "connection": "keep-alive"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "id": "evt_01k5svkexmszyb4kj68fm7164v",
+            "timestamp": 1758583176117,
+            "event": "message",
+            "session": "default",
+            "metadata": {},
+            "me": {
+              "id": "558498511246@c.us",
+              "pushName": "PIPAaluguel",
+              "lid": "135987288101032@lid",
+              "jid": "558498511246:3@s.whatsapp.net"
+            },
+            "payload": {
+              "id": "false_558496845632@c.us_3A7733BEF155C2277DB9",
+              "timestamp": 1758583176,
+              "from": "558496845632@c.us",
+              "fromMe": false,
+              "source": "app",
+              "body": "Oi",
+              "to": null,
+              "participant": null,
+              "hasMedia": false,
+              "media": null,
+              "ack": 2,
+              "ackName": "DEVICE",
+              "replyTo": null,
+              "_data": {
+                "Info": {
+                  "Chat": "558496845632@s.whatsapp.net",
+                  "Sender": "558496845632@s.whatsapp.net",
+                  "IsFromMe": false,
+                  "IsGroup": false,
+                  "AddressingMode": "",
+                  "SenderAlt": "163556767097048@lid",
+                  "RecipientAlt": "",
+                  "BroadcastListOwner": "",
+                  "ID": "3A7733BEF155C2277DB9",
+                  "ServerID": 0,
+                  "Type": "text",
+                  "PushName": "Milena Maia",
+                  "Timestamp": "2025-09-22T23:19:36Z",
+                  "Category": "",
+                  "Multicast": false,
+                  "MediaType": "",
+                  "Edit": "",
+                  "MsgBotInfo": {
+                    "EditType": "",
+                    "EditTargetID": "",
+                    "EditSenderTimestampMS": "0001-01-01T00:00:00Z"
+                  },
+                  "MsgMetaInfo": {
+                    "TargetID": "",
+                    "TargetSender": "",
+                    "TargetChat": "",
+                    "DeprecatedLIDSession": null,
+                    "ThreadMessageID": "",
+                    "ThreadMessageSenderJID": ""
+                  },
+                  "VerifiedName": null,
+                  "DeviceSentMeta": null
+                },
+                "Message": {
+                  "conversation": "Oi",
+                  "messageContextInfo": {
+                    "deviceListMetadata": {
+                      "senderKeyHash": "tul+I8Ky0wTyRA==",
+                      "senderTimestamp": 1758304945,
+                      "recipientKeyHash": "1Nddptga7Hz/gQ==",
+                      "recipientTimestamp": 1758581463
+                    },
+                    "deviceListMetadataVersion": 2,
+                    "messageSecret": "VVsCadknhraQlO7EYBKvodnqui0pA0+Gxtx2RjWBDFw="
+                  }
+                },
+                "IsEphemeral": false,
+                "IsViewOnce": false,
+                "IsViewOnceV2": false,
+                "IsViewOnceV2Extension": false,
+                "IsDocumentWithCaption": false,
+                "IsLottieSticker": false,
+                "IsBotInvoke": false,
+                "IsEdit": false,
+                "SourceWebMsg": null,
+                "UnavailableRequestID": "",
+                "RetryCount": 0,
+                "NewsletterMeta": null,
+                "RawMessage": {
+                  "conversation": "Oi",
+                  "messageContextInfo": {
+                    "deviceListMetadata": {
+                      "senderKeyHash": "tul+I8Ky0wTyRA==",
+                      "senderTimestamp": 1758304945,
+                      "recipientKeyHash": "1Nddptga7Hz/gQ==",
+                      "recipientTimestamp": 1758581463
+                    },
+                    "deviceListMetadataVersion": 2,
+                    "messageSecret": "VVsCadknhraQlO7EYBKvodnqui0pA0+Gxtx2RjWBDFw="
+                  }
+                },
+                "Status": 3
+              }
+            },
+            "environment": {
+              "version": "2025.9.4",
+              "engine": "GOWS",
+              "tier": "CORE",
+              "browser": null
+            }
+          },
+          "webhookUrl": "http://host.docker.internal:5678/webhook-test/webehook",
+          "executionMode": "test"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Dados",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Dados": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send Seen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Redis Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Seen": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wikipedia": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8839c5b0-8f56-4dc0-9a8c-e76e541bbe30",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "66502a9b7e88af4b81c5a84d079f6997016a12c50a890eadf4b2250f4463f3a9"
+  },
+  "id": "VTl1uOr9HcrcBnfD",
+  "tags": []
+}
