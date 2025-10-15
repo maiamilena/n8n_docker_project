@@ -4,9 +4,9 @@ Desafio: Automatizar conversas de boas vindas, solicitar informações basicas d
 
 ## 💬 Sobre o projeto
 
-Este projeto nasceu da minha curiosidade em unir duas áreas que amo: **Ciência de Dados** e **Automação**.
+Este projeto nasceu da minha curiosidade em unir duas áreas que amo: **Ciência de Dados** e **Automação** 
 
-Mesmo sendo da área de dados, decidi me aventurar no mundo dos **workflows, webhooks, Redis, Docker e IA conversacional** — e o resultado foi esse robô turístico simpático que conversa com clientes do **PipaAluguel**, ajudando com reservas e dando dicas sobre as belezas de Pipa 🌊.
+Mesmo sendo da área de dados, decidi me aventurar no mundo dos **workflows, webhooks, Redis, Docker e IA** e o resultado foi esse robô turístico simpático que conversa com clientes do **PipaAluguel**, ajudando com reservas e dando dicas sobre as belezas de Pipa 🌊.
 
 O fluxo foi criado no **n8n** e usa:
 
