@@ -25,4 +25,4 @@ O fluxo foi criado no **n8n** e usa:
 ├── n8n_waha_pipa.json # Workflow completo exportado do n8n
 ├── .gitignore
 ├── README.md
-└── workflow.png # (opcional) print do fluxo visual
+└── workflow.png #
